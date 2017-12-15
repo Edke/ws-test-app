@@ -1,0 +1,20 @@
+version: '3'
+services:
+  lb:
+    image: wstestapp-lb
+    ports:
+      - "8080:80"
+    command: /bin/sh -c "/sbin/syslogd -O /dev/stdout && haproxy -f /usr/local/etc/haproxy/haproxy.cfg"
+
+  web:
+    image: wstestapp-web-wsgi
+    volumes:
+      - ./:/app
+
+  ws:
+    image: wstestapp-web-ws
+    volumes:
+      - ./:/app
+
+  cache:
+    image: redis:3.2.11-alpine
